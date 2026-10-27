@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<link rel="icon" href="data:," />
+<title>Siapa Aku Bangun Ruang</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#eef5f2; --card:#ffffff; --card2:#e3efe9; --ink:#12322b; --muted:#4c665e;
+    --line:#c9ddd5; --teal:#0c7a67; --teal-dark:#095c4d; --amber:#f2a413; --coral:#e4572e;
+    --ya:#0c7a67; --tidak:#c2431f; --shadow:0 10px 28px rgba(18,50,43,.12);
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0d1f1b; --card:#16302a; --card2:#1c3a33; --ink:#eaf5f1; --muted:#a9c4bb;
+      --line:#2c4f46; --teal:#2bb79b; --teal-dark:#7fd6c2; --amber:#f5b93f; --coral:#ff8a66;
+      --ya:#2bb79b; --tidak:#ff8a66; --shadow:0 10px 28px rgba(0,0,0,.4);
+    }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+    background:var(--bg); color:var(--ink); line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1060px;margin:0 auto;padding:20px 16px 48px}
+  h1,h2,h3{line-height:1.15;margin:0}
+  button{font-family:inherit;cursor:pointer}
+  button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+
+  /* ---------- Intro ---------- */
+  .intro{padding:10px 2px 4px}
+  .intro h1{font-size:clamp(2rem,6vw,3.2rem);font-weight:800;letter-spacing:-.02em}
+  .intro h1 .q{color:var(--teal)}
+  .intro p{margin:8px 0 0;color:var(--muted);font-size:clamp(1rem,2.6vw,1.13rem);max-width:640px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .chip{background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:5px 13px;font-size:.85rem;font-weight:700}
+  .chip b{color:var(--teal)}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 20px}
+  .step{background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;gap:11px;align-items:flex-start}
+  .step .num{flex:0 0 auto;width:30px;height:30px;border-radius:50%;background:var(--teal);color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:.95rem}
+  .step p{margin:2px 0 0;font-size:.92rem}
+  .step p b{display:block;font-size:.98rem}
+  @media (max-width:640px){.steps{grid-template-columns:1fr}}
+
+  /* ---------- Stage ---------- */
+  .stage{background:var(--card);border:1.5px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:18px;margin-top:18px}
+  .stage-top{display:flex;flex-wrap:wrap;gap:16px;align-items:stretch}
+  .mystery{
+    flex:1 1 260px;min-height:190px;border-radius:16px;position:relative;overflow:hidden;
+    background:var(--card2);border:2px dashed var(--teal);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:18px;text-align:center;
+  }
+  .mystery .big-q{font-size:5.2rem;font-weight:800;line-height:1;color:var(--teal)}
+  .mystery .who{font-weight:800;font-size:1.25rem;letter-spacing:.04em;text-transform:uppercase}
+  .mystery .hint{color:var(--muted);font-size:.9rem;max-width:300px}
+  .mystery .shape-art{width:130px;height:110px;display:none}
+  .mystery.revealed{border-style:solid;border-color:var(--amber);background:var(--card)}
+  .mystery.revealed .big-q,.mystery.revealed .hint{display:none}
+  .mystery.revealed .shape-art{display:block}
+  .mystery.shake{animation:shake .45s ease}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px)}40%{transform:translateX(9px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+
+  .side{flex:1 1 240px;display:flex;flex-direction:column;gap:10px;justify-content:center}
+  @keyframes pop{0%{transform:scale(.94)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+  .stage-btns{display:flex;flex-wrap:wrap;gap:8px}
+  .btn{border:none;border-radius:12px;padding:11px 16px;font-weight:800;font-size:.95rem;background:var(--teal);color:#fff}
+  .btn:hover{background:var(--teal-dark)}
+  .btn.ghost{background:transparent;color:var(--teal);border:2px solid var(--teal)}
+  .btn.ghost:hover{background:var(--card2);color:var(--ink)}
+  .btn.small{padding:8px 12px;font-size:.85rem}
+  .peek-note{font-size:.85rem;color:var(--muted)}
+  .peek-note b{color:var(--coral)}
+
+  /* ---------- Ciri yang muncul di panggung ---------- */
+  .current-q{
+    margin-top:16px;border:2px solid var(--amber);border-radius:16px;background:var(--card2);
+    padding:16px 18px;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between;
+  }
+  .current-q .cq-body{flex:1 1 320px;min-width:0}
+  .cq-label{font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--coral)}
+  .cq-text{font-size:clamp(1.25rem,3.4vw,1.7rem);font-weight:800;line-height:1.25;margin-top:3px}
+  .cq-sub{font-size:.88rem;color:var(--muted);margin-top:3px}
+  .current-q.pop{animation:pop .35s ease}
+  .current-q.done{border-color:var(--line)}
+  #btnNextClue{flex:0 0 auto;font-size:1rem;padding:13px 18px}
+  @media (max-width:640px){#btnNextClue{width:100%}}
+
+  /* ---------- Guess ---------- */
+  .guess-panel{background:var(--card);border:1.5px solid var(--line);border-radius:20px;padding:18px;margin-top:20px;box-shadow:var(--shadow)}
+  .guess-panel.locked{opacity:.75}
+  .guess-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-top:12px}
+  .gbtn{
+    background:var(--card2);border:2px solid var(--line);border-radius:16px;padding:12px 8px 10px;
+    display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:800;font-size:1rem;color:var(--ink);
+  }
+  .gbtn svg{width:64px;height:52px}
+  .gbtn:hover:not(:disabled){border-color:var(--amber);transform:translateY(-2px)}
+  .gbtn:disabled{opacity:.45;cursor:not-allowed}
+  .gbtn.wrong{border-color:var(--tidak);opacity:.45}
+  .lock-msg{font-weight:700;color:var(--muted)}
+  .lock-msg b{color:var(--coral)}
+
+  .result{display:none;margin-top:16px;border-radius:16px;padding:16px;background:var(--card2);border:2px solid var(--amber)}
+  .result.show{display:block}
+  .result h3{font-size:1.35rem;margin-bottom:4px}
+  .result .stars{font-size:1.5rem;letter-spacing:.15em;color:var(--amber)}
+  .result p{margin:6px 0}
+  .history{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+  .hchip{background:var(--card);border:1.5px solid var(--line);border-radius:999px;padding:5px 12px;font-size:.84rem;font-weight:700}
+
+  .confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:50}
+  .confetti i{position:absolute;top:-14px;width:10px;height:16px;border-radius:2px;animation:fall linear forwards}
+  @keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:.001s !important;transition-duration:.001s !important}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="intro">
+    <h1>Siapa Aku<span class="q">?</span></h1>
+    <p>Seorang bangun ruang bersembunyi. Aplikasi akan memunculkan <b>ciri-cirinya</b> satu per satu — tugas kelas tinggal menentukan: <b>bangun ruang apa yang sesuai dengan ciri-ciri itu?</b> Siapa bisa menebak dengan ciri paling sedikit?</p>
+  </header>
+
+  <!-- STAGE -->
+  <section class="stage" aria-label="Panggung permainan">
+    <div class="stage-top">
+      <div class="mystery" id="mysteryCard">
+        <div class="big-q" aria-hidden="true">?</div>
+        <div class="shape-art" id="revealArt"></div>
+        <div class="who" id="mysteryLabel">Bangun Rahasia</div>
+        <div class="hint" id="mysteryHint">Tekan “Mulai Ronde”, lalu perhatikan ciri-cirinya yang muncul. Jangan dibocorkan dulu ya!</div>
+      </div>
+      <div class="side">
+        <div class="stage-btns">
+          <button class="btn" id="btnStart" type="button">🎲 Mulai Ronde — Acak Bangun</button>
+          <button class="btn ghost" id="btnPeek" type="button">Intip Bangun (Khusus Guru)</button>
+          <button class="btn ghost" id="btnSound" type="button" aria-pressed="true">Suara: Nyala</button>
+        </div>
+        <div class="peek-note" id="peekNote"></div>
+      </div>
+    </div>
+    <div class="current-q" id="clueBox">
+      <div class="cq-body">
+        <div class="cq-label" id="clueLabel">Ciri 1 — muncul otomatis</div>
+        <div class="cq-text" id="clueText">Ciri pertama akan muncul di sini begitu ronde dimulai.</div>
+        <div class="cq-sub" id="clueSub">Kelas membaca cirinya bersama-sama, lalu mendiskusikan bangun apa yang mungkin cocok.</div>
+      </div>
+      <button class="btn" id="btnNextClue" type="button">Ciri Berikutnya →</button>
+    </div>
+  </section>
+
+  <!-- GUESS -->
+  <section class="guess-panel locked" id="guessPanel" aria-label="Panel tebakan">
+    <h2 style="font-size:1.3rem">Bangun Apa yang Sesuai dengan Ciri-Ciri Itu?</h2>
+    <p class="lock-msg" id="lockMsg">Panel tebakan terkunci. Tunggu dulu sampai <b>2 ciri</b> muncul — sekarang baru <span id="lockCount">0</span>.</p>
+    <div class="guess-grid" id="guessGrid"></div>
+    <div class="result" id="resultBox">
+      <div class="stars" id="resultStars" aria-hidden="true"></div>
+      <h3 id="resultTitle"></h3>
+      <p id="resultFact"></p>
+      <p id="resultScore"></p>
+      <button class="btn" id="btnNext" type="button">Ronde Berikutnya →</button>
+      <div class="history" id="historyRow"></div>
+    </div>
+  </section>
+
+</div>
+
+<div class="confetti" id="confettiBox" aria-hidden="true"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Data bangun & ciri-cirinya ---------- */
+  /* Ciri disusun dari yang umum ke yang paling khas, muncul satu per satu */
+  var SHAPES = {
+    kubus:  { name:"Kubus",   fact:"Kubus mempunyai 6 sisi berbentuk persegi yang sama besar, 12 rusuk, dan 8 titik sudut.",
+      clues:[
+        "Aku mempunyai 6 sisi.",
+        "Aku mempunyai 12 rusuk dan 8 titik sudut.",
+        "Semua sisiku berbentuk persegi yang sama besar.",
+        "Bentukku seperti dadu."
+      ] },
+    balok:  { name:"Balok",   fact:"Balok mempunyai 6 sisi, sisi-sisi yang berhadapan sama besar dan umumnya berbentuk persegi panjang, 12 rusuk, dan 8 titik sudut.",
+      clues:[
+        "Aku mempunyai 6 sisi.",
+        "Aku mempunyai 12 rusuk dan 8 titik sudut.",
+        "Sisi-sisi yang berhadapan padaku sama besar.",
+        "Sisiku umumnya berbentuk persegi panjang."
+      ] },
+    tabung: { name:"Tabung",  fact:"Tabung mempunyai 3 sisi: alas dan tutup berbentuk lingkaran yang sama besar, serta selimut lengkung. Tabung tidak mempunyai titik sudut.",
+      clues:[
+        "Aku mempunyai 3 sisi.",
+        "Aku tidak mempunyai titik sudut.",
+        "Aku mempunyai satu sisi lengkung yang bisa digulung.",
+        "Alas dan tutupku berbentuk lingkaran yang sama besar."
+      ] },
+    kerucut:{ name:"Kerucut", fact:"Kerucut mempunyai 2 sisi: alas berbentuk lingkaran dan selimut lengkung, serta 1 titik puncak yang runcing.",
+      clues:[
+        "Aku mempunyai 2 sisi.",
+        "Alasku berbentuk lingkaran.",
+        "Aku mempunyai satu sisi lengkung yang bisa digulung.",
+        "Aku mempunyai 1 titik puncak yang runcing."
+      ] },
+    bola:   { name:"Bola",    fact:"Bola hanya mempunyai 1 sisi lengkung, tidak mempunyai rusuk dan titik sudut, serta dapat menggelinding ke segala arah.",
+      clues:[
+        "Aku hanya mempunyai 1 sisi.",
+        "Aku tidak mempunyai rusuk dan titik sudut.",
+        "Sisiku melengkung ke segala arah.",
+        "Aku bisa menggelinding dan memantul ke segala arah."
+      ] }
+  };
+  var ORDER = ["kubus","balok","tabung","kerucut","bola"];
+  var TOTAL_CLUES = 4;
+  var MIN_CLUES_TO_GUESS = 2;
+
+  /* ---------- Gambar bangun (SVG) ---------- */
+  function art(key){
+    var s = {
+      kubus:'<svg viewBox="0 0 100 84" role="img" aria-label="Kubus"><polygon points="28,18 66,18 66,56 28,56" fill="#2bb79b"/><polygon points="28,18 40,6 78,6 66,18" fill="#7fd6c2"/><polygon points="66,18 78,6 78,44 66,56" fill="#0c7a67"/><rect x="28" y="18" width="38" height="38" fill="none" stroke="#12322b" stroke-width="2"/><path d="M28 18 L40 6 H78 L66 18 M78 6 V44 L66 56" fill="none" stroke="#12322b" stroke-width="2"/></svg>',
+      balok:'<svg viewBox="0 0 100 84" role="img" aria-label="Balok"><polygon points="14,26 74,26 74,58 14,58" fill="#f2a413"/><polygon points="14,26 26,12 86,12 74,26" fill="#f8cd6b"/><polygon points="74,26 86,12 86,44 74,58" fill="#c47f06"/><rect x="14" y="26" width="60" height="32" fill="none" stroke="#12322b" stroke-width="2"/><path d="M14 26 L26 12 H86 L74 26 M86 12 V44 L74 58" fill="none" stroke="#12322b" stroke-width="2"/></svg>',
+      tabung:'<svg viewBox="0 0 100 84" role="img" aria-label="Tabung"><path d="M28 18 v44 c0 7 44 7 44 0 V18" fill="#5b8def"/><ellipse cx="50" cy="18" rx="22" ry="8" fill="#a9c6f7" stroke="#12322b" stroke-width="2"/><path d="M28 18 v44 c0 7 44 7 44 0 V18 M28 62 c0 7 44 7 44 0" fill="none" stroke="#12322b" stroke-width="2"/></svg>',
+      kerucut:'<svg viewBox="0 0 100 84" role="img" aria-label="Kerucut"><path d="M50 8 L72 62 c0 7 -44 7 -44 0 Z" fill="#e4572e"/><ellipse cx="50" cy="62" rx="22" ry="7.5" fill="#f0937a" stroke="#12322b" stroke-width="2"/><path d="M50 8 L28 62 M50 8 L72 62" stroke="#12322b" stroke-width="2" fill="none"/></svg>',
+      bola:'<svg viewBox="0 0 100 84" role="img" aria-label="Bola"><circle cx="50" cy="42" r="32" fill="#9b59d0"/><ellipse cx="50" cy="42" rx="32" ry="12" fill="none" stroke="#12322b" stroke-width="2" opacity=".55"/><ellipse cx="38" cy="28" rx="10" ry="6" fill="#cfa9ec" opacity=".8"/><circle cx="50" cy="42" r="32" fill="none" stroke="#12322b" stroke-width="2"/></svg>'
+    };
+    return s[key] || "";
+  }
+
+  /* ---------- Suara (Web Audio, defensif) ---------- */
+  var soundOn = true, actx = null;
+  function beep(freq, dur, type){
+    if(!soundOn) return;
+    try{
+      if(!actx) actx = new (window.AudioContext || window.webkitAudioContext)();
+      if(actx.state === "suspended") actx.resume();
+      var o = actx.createOscillator(), g = actx.createGain();
+      o.type = type || "sine"; o.frequency.value = freq;
+      g.gain.setValueAtTime(0.16, actx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, actx.currentTime + dur);
+      o.connect(g); g.connect(actx.destination);
+      o.start(); o.stop(actx.currentTime + dur);
+    }catch(e){ /* diam saja bila audio tidak tersedia */ }
+  }
+  function speak(text){
+    try{
+      if(!soundOn || !("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = "id-ID"; u.rate = 1;
+      window.speechSynthesis.speak(u);
+    }catch(e){}
+  }
+
+  /* ---------- State ---------- */
+  var state = {
+    round: 1,
+    secret: null,
+    started: false,
+    solved: false,
+    cluesShown: 0,    // berapa ciri yang sudah dimunculkan
+    wrongGuesses: 0,
+    wrongShapes: {},
+    history: []       // {round, shape, clues, wrong}
+  };
+
+  /* ---------- Elemen ---------- */
+  function $(id){ return document.getElementById(id); }
+  var guessGrid = $("guessGrid");
+
+  /* Bangun tombol tebakan */
+  ORDER.forEach(function(key){
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "gbtn"; b.id = "guess-" + key;
+    b.innerHTML = art(key) + "<span>" + SHAPES[key].name + "</span>";
+    b.addEventListener("click", function(){ guess(key); });
+    guessGrid.appendChild(b);
+  });
+
+  /* ---------- Logika permainan ---------- */
+  function startRound(){
+    state.secret = ORDER[Math.floor(Math.random() * ORDER.length)];
+    state.started = true;
+    state.solved = false;
+    state.cluesShown = 0;
+    state.wrongGuesses = 0;
+    state.wrongShapes = {};
+    $("resultBox").className = "result";
+    $("peekNote").innerHTML = "";
+    var card = $("mysteryCard");
+    card.classList.remove("revealed");
+    $("mysteryLabel").textContent = "Bangun Rahasia";
+    $("mysteryHint").textContent = "Bangun rahasia ronde " + state.round + " sudah bersembunyi. Perhatikan ciri-cirinya yang muncul satu per satu, lalu tentukan bangunnya!";
+    ORDER.forEach(function(key){
+      $("guess-" + key).classList.remove("wrong");
+    });
+    render();
+    revealClue(); /* ciri pertama langsung muncul sendiri */
+    beep(520, .15, "triangle");
+  }
+
+  /* Munculkan ciri berikutnya di panggung */
+  function revealClue(){
+    if(!state.started || state.solved) return;
+    if(state.cluesShown >= TOTAL_CLUES) { renderClueBox(); return; }
+    var idx = state.cluesShown;
+    var text = SHAPES[state.secret].clues[idx];
+    state.cluesShown++;
+    renderClueBox(true);
+    beep(620, .15, "sine");
+    speak("Ciri " + (idx+1) + ". " + text);
+    render();
+  }
+
+  /* Tampilkan ciri terakhir yang muncul di kotak panggung */
+  function renderClueBox(popIt){
+    var box = $("clueBox"), btn = $("btnNextClue");
+    if(state.solved){
+      box.classList.add("done");
+      $("clueLabel").textContent = "Ronde selesai";
+      $("clueText").textContent = "Bangun rahasia sudah terungkap dari ciri-cirinya. Tekan “Ronde Berikutnya” di bawah untuk mulai lagi — ciri baru akan muncul sendiri.";
+      $("clueSub").textContent = "";
+      btn.disabled = true; btn.textContent = "Selesai ✓";
+      return;
+    }
+    if(state.cluesShown === 0){
+      box.classList.remove("done");
+      $("clueLabel").textContent = "Ciri 1 — muncul otomatis";
+      $("clueText").textContent = "Ciri pertama akan muncul di sini begitu ronde dimulai.";
+      $("clueSub").textContent = "Kelas membaca cirinya bersama-sama, lalu mendiskusikan bangun apa yang mungkin cocok.";
+      btn.disabled = false; btn.textContent = "Ciri Berikutnya →";
+      return;
+    }
+    var n = state.cluesShown;
+    var text = SHAPES[state.secret].clues[n - 1];
+    box.classList.remove("done");
+    $("clueLabel").textContent = "Ciri " + n + " dari " + TOTAL_CLUES + (n === 1 ? " — muncul otomatis" : " — baru muncul");
+    $("clueText").textContent = "“" + text + "”";
+    if(n >= TOTAL_CLUES){
+      $("clueSub").textContent = "Semua ciri sudah muncul. Sekarang tentukan: bangun ruang apa yang sesuai dengan semua ciri itu?";
+      btn.disabled = true; btn.textContent = "Semua Ciri Sudah Muncul";
+    } else {
+      $("clueSub").textContent = state.cluesShown < MIN_CLUES_TO_GUESS
+        ? "Satu ciri lagi, panel tebakan akan terbuka. Atau munculkan ciri berikutnya bila kelas masih ragu."
+        : "Panel tebakan sudah terbuka — kelas boleh menentukan bangunnya kapan saja, atau memunculkan ciri berikutnya.";
+      btn.disabled = false; btn.textContent = "Ciri Berikutnya →";
+    }
+    if(popIt){ box.classList.remove("pop"); void box.offsetWidth; box.classList.add("pop"); }
+  }
+
+  function guess(key){
+    if(!state.started || state.solved) return;
+    if(state.cluesShown < MIN_CLUES_TO_GUESS) { render(); return; }
+    if(key === state.secret){
+      state.solved = true;
+      var card = $("mysteryCard");
+      card.classList.add("revealed");
+      $("revealArt").innerHTML = art(key);
+      $("mysteryLabel").textContent = SHAPES[key].name + "!";
+      state.history.push({ round: state.round, shape: SHAPES[key].name, clues: state.cluesShown, wrong: state.wrongGuesses });
+      var stars = state.cluesShown <= 2 ? "★ ★ ★" : (state.cluesShown === 3 ? "★ ★ ☆" : "★ ☆ ☆");
+      var praise = state.cluesShown <= 2 ? "Detektif hebat! Baru sedikit ciri, langsung ketemu bangunnya." :
+                   state.cluesShown === 3 ? "Pencocokan ciri yang rapi! Cirinya dibaca satu per satu." :
+                   "Berhasil terungkap! Ronde berikutnya, coba tentukan bangunnya dari ciri yang lebih sedikit.";
+      $("resultStars").textContent = stars;
+      $("resultTitle").textContent = "Benar! Ciri-ciri itu adalah ciri " + SHAPES[key].name + " 🎉";
+      $("resultFact").textContent = SHAPES[key].fact;
+      $("resultScore").textContent = "Terungkap dari " + state.cluesShown + " ciri dan " + state.wrongGuesses + " tebakan salah. " + praise;
+      $("resultBox").classList.add("show");
+      var hr = $("historyRow"); hr.innerHTML = "";
+      state.history.forEach(function(h){
+        var c = document.createElement("span");
+        c.className = "hchip";
+        c.textContent = "Ronde " + h.round + ": " + h.shape + " • " + h.clues + " ciri";
+        hr.appendChild(c);
+      });
+      beep(523, .15, "triangle");
+      setTimeout(function(){ beep(659, .15, "triangle"); }, 130);
+      setTimeout(function(){ beep(784, .3, "triangle"); }, 260);
+      speak("Benar! Bangunnya adalah " + SHAPES[key].name);
+      confetti();
+      render();
+      renderClueBox(false);
+    } else {
+      if(state.wrongShapes[key]) return;
+      state.wrongShapes[key] = true;
+      state.wrongGuesses++;
+      $("guess-" + key).classList.add("wrong");
+      var card2 = $("mysteryCard");
+      card2.classList.remove("shake"); void card2.offsetWidth; card2.classList.add("shake");
+      beep(180, .25, "sawtooth");
+      render();
+    }
+  }
+
+  function render(){
+    var unlocked = state.cluesShown >= MIN_CLUES_TO_GUESS && state.started && !state.solved;
+    var panel = $("guessPanel");
+    panel.classList.toggle("locked", !(state.cluesShown >= MIN_CLUES_TO_GUESS));
+    $("lockMsg").innerHTML = state.solved
+      ? "Ronde ini selesai. Lanjut ke ronde berikutnya untuk bangun rahasia baru."
+      : (state.cluesShown >= MIN_CLUES_TO_GUESS
+          ? "Sudah ada cukup ciri! Pilih bangun yang paling cocok dengan semua ciri yang sudah muncul."
+          : 'Panel tebakan terkunci. Tunggu dulu sampai <b>2 ciri</b> muncul — sekarang baru <span id="lockCount">' + state.cluesShown + "</span>.");
+    ORDER.forEach(function(key){
+      $("guess-" + key).disabled = !unlocked || !!state.wrongShapes[key];
+    });
+  }
+
+  function confetti(){
+    var box = $("confettiBox");
+    var colors = ["#0c7a67","#f2a413","#e4572e","#5b8def","#9b59d0"];
+    for(var i = 0; i < 60; i++){
+      var p = document.createElement("i");
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.background = colors[i % colors.length];
+      p.style.animationDuration = (1.4 + Math.random() * 1.4) + "s";
+      p.style.animationDelay = (Math.random() * .35) + "s";
+      box.appendChild(p);
+    }
+    setTimeout(function(){ box.innerHTML = ""; }, 3400);
+  }
+
+  /* ---------- Kontrol ---------- */
+  $("btnStart").addEventListener("click", function(){
+    if(state.started && !state.solved && state.cluesShown > 0){
+      state.round++; /* mulai ulang dihitung ronde baru */
+    }
+    startRound();
+  });
+  $("btnNextClue").addEventListener("click", function(){
+    if(!state.started){ startRound(); return; }
+    revealClue();
+  });
+  $("btnNext").addEventListener("click", function(){
+    state.round++;
+    startRound();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+  $("btnPeek").addEventListener("click", function(){
+    if(!state.started){ $("peekNote").textContent = "Mulai ronde dulu, baru ada bangun yang bisa diintip."; return; }
+    $("peekNote").innerHTML = "Psst… bangun rahasia ronde ini adalah <b>" + SHAPES[state.secret].name + "</b>. Pastikan layar tidak terlihat kelas saat mengintip ya.";
+    beep(440, .1, "sine");
+  });
+  $("btnSound").addEventListener("click", function(){
+    soundOn = !soundOn;
+    this.textContent = "Suara: " + (soundOn ? "Nyala" : "Mati");
+    this.setAttribute("aria-pressed", soundOn ? "true" : "false");
+    if(!soundOn){ try{ window.speechSynthesis.cancel(); }catch(e){} }
+  });
+  /* Ronde pertama langsung siap dimainkan, ciri pertama muncul sendiri */
+  startRound();
+})();
+</script>
+</body>
+</html>
